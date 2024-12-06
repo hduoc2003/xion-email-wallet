@@ -10,7 +10,7 @@ services:
   db:
     image: postgres
     environment:
-      - POSTGRES_PASSWORD=p@ssw0rd
+      - POSTGRES_PASSWORD=password
       - POSTGRES_USER=emailwallet
       - POSTGRES_DB=emailwallet
     ports:

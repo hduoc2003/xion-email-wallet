@@ -1,4 +1,3 @@
-use ethers::contract::Abigen;
 // use std::path::Path;
 
 fn main() {

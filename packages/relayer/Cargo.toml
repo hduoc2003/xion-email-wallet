@@ -8,7 +8,6 @@ tower-http = { version = "0.4", git = "https://github.com/tower-rs/tower-http.gi
     "cors",
 ], rev = "f33c3e038dc85b8d064541e915d501f9c9e6a6b4" }
 tokio = { version = "1.0", features = ["full"] }
-sled = "0.34.2"
 anyhow = "1.0.75"
 dotenv = "0.15.0"
 oauth2 = "4.3.0"
@@ -31,8 +30,6 @@ regex = "1.10.2"
 axum = "0.6.20"
 rand = "0.8.5"
 reqwest = "0.11.22"
-num-bigint = { version = "0.4", features = ["rand"] }
-num-traits = "0.2.16"
 hex = "0.4.3"
 chrono = "0.4.31"
 ff = { version = "0.13.0", default-features = false, features = ["std"] }
@@ -52,10 +49,3 @@ slog-term = "2.9.0"
 slog-json = "2.6.1"
 file-rotate = "0.7.5"
 function_name = "0.3.0"
-# wasm-bindgen = { version = "0.2.90", default-features = false }
-
-# wasm-bindgen = { git = "https://github.com/rustwasm/wasm-bindgen.git", tag = "0.2.88", default-features = false }
-
-
-[build-dependencies]
-ethers = "2.0.10"
