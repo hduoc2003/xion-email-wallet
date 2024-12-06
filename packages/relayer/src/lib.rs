@@ -152,251 +152,128 @@ pub async fn run(config: RelayerConfig) -> Result<()> {
     //     panic!("Relayer randomness is not registered");
     // }
 
-    // let tx_handler_for_fetcher_task = tx_handler.clone();
-    // let emails_pool_fetcher_task = tokio::task::spawn(async move {
-    //     loop {
-    //         match emails_pool_fetcher_fn(&tx_handler_for_fetcher_task).await {
-    //             Ok(()) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at emails_pool_fetcher: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //     anyhow::Ok(())
-    // });
-    // let db_clone_receiver = Arc::clone(&db);
-    // let mut email_receiver = ImapClient::new(config.imap_config).await?;
-    // let tx_handler_for_receiver_task = tx_handler.clone();
-    // let email_receiver_task = tokio::task::spawn(async move {
-    //     loop {
-    //         match email_receiver_fn(&mut email_receiver, &tx_handler_for_receiver_task).await {
-    //             Ok(new_email_receiver) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at email_receiver: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //     anyhow::Ok(())
-    // });
-    //
-    // let tx_sender_for_email_task = tx_sender.clone();
-    // let tx_claimer_for_email_task = tx_claimer.clone();
-    // let tx_creator_for_email_task = tx_creator.clone();
-    // let db_clone = Arc::clone(&db);
-    // let client_clone = Arc::clone(&client);
-    // let email_handler_task = tokio::task::spawn(async move {
-    //     loop {
-    //         match email_handler_fn(
-    //             &mut rx_handler,
-    //             Arc::clone(&db_clone),
-    //             Arc::clone(&client_clone),
-    //             tx_sender_for_email_task.clone().into(),
-    //             &tx_claimer_for_email_task,
-    //             &tx_creator_for_email_task,
-    //         )
-    //         .await
-    //         {
-    //             Ok(()) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at email_handler: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //
-    //     anyhow::Ok(())
-    // });
-    //
-    // let tx_sender_for_creator_task = tx_sender.clone();
-    // let db_clone = Arc::clone(&db);
-    // let client_clone = Arc::clone(&client);
-    // let account_creation_task = tokio::task::spawn(async move {
-    //     loop {
-    //         match account_creation_fn(
-    //             &mut rx_creator,
-    //             Arc::clone(&db_clone),
-    //             Arc::clone(&client_clone),
-    //             &tx_sender_for_creator_task,
-    //         )
-    //         .await
-    //         {
-    //             Ok(()) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at account_creation: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //
-    //     anyhow::Ok(())
-    // });
-    //
-    // let tx_sender_for_claimer_task = tx_sender.clone();
-    // let tx_creator_for_claimer_task = tx_creator.clone();
-    // let db_clone = Arc::clone(&db);
-    // let client_clone = Arc::clone(&client);
-    // let claimer_task = tokio::task::spawn(async move {
-    //     loop {
-    //         match claimer_fn(
-    //             &mut rx_claimer,
-    //             Arc::clone(&db_clone),
-    //             Arc::clone(&client_clone),
-    //             &tx_creator_for_claimer_task,
-    //             &tx_sender_for_claimer_task,
-    //         )
-    //         .await
-    //         {
-    //             Ok(()) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at claimer: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //
-    //     anyhow::Ok(())
-    // });
-    //
-    // let tx_claimer_for_server_task = tx_claimer.clone();
-    // let api_server_task = tokio::task::spawn(
-    //     run_server(
-    //         WEB_SERVER_ADDRESS.get().unwrap(),
-    //         Arc::clone(&db),
-    //         Arc::clone(&client),
-    //         tx_claimer_for_server_task,
-    //     )
-    //     .map_err(|err| error!(LOG, "Error api server: {}", err; "func" => function_name!())),
-    // );
-    //
-    // let email_sender = SmtpClient::new(config.smtp_config)?;
-    // let email_sender_task = tokio::task::spawn(async move {
-    //     loop {
-    //         match email_sender_fn(&mut rx_sender, &email_sender).await {
-    //             Ok(()) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at email_sender: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //
-    //     anyhow::Ok(())
-    // });
-    //
-    // let tx_claimer_for_listener_task = tx_claimer.clone();
-    // let client_clone = Arc::clone(&client);
-    // let event_listener_task = tokio::task::spawn(async move {
-    //     let mut from_block_fund = U64::from(0);
-    //     let mut from_block_state = U64::from(0);
-    //     let fund_f = |event: email_wallet_events::UnclaimedFundRegisteredFilter, meta: LogMeta| {
-    //         if event.email_addr.is_empty() {
-    //             return Ok(());
-    //         }
-    //         let random = field2hex(&bytes32_to_fr(&u256_to_bytes32(
-    //             &event.commitment_randomness,
-    //         ))?);
-    //         let commit = field2hex(&bytes32_to_fr(&event.email_addr_commit)?);
-    //         let claim = Claim {
-    //             id: event.id,
-    //             email_address: event.email_addr,
-    //             random,
-    //             commit,
-    //             expiry_time: i64::try_from(event.expiry_time.as_u64()).unwrap(),
-    //             is_fund: true,
-    //             is_announced: true,
-    //         };
-    //         tx_claimer_for_listener_task.send(claim)?;
-    //         Ok(())
-    //     };
-    //     let state_f = |event: email_wallet_events::UnclaimedStateRegisteredFilter,
-    //                    meta: LogMeta| {
-    //         if event.email_addr.is_empty() {
-    //             return Ok(());
-    //         }
-    //         let random = field2hex(&bytes32_to_fr(&u256_to_bytes32(
-    //             &event.commitment_randomness,
-    //         ))?);
-    //         let commit = field2hex(&bytes32_to_fr(&event.email_addr_commit)?);
-    //         let claim = Claim {
-    //             id: event.id,
-    //             email_address: event.email_addr,
-    //             random,
-    //             commit,
-    //             expiry_time: i64::try_from(event.expiry_time.as_u64()).unwrap(),
-    //             is_fund: false,
-    //             is_announced: true,
-    //         };
-    //         tx_claimer_for_listener_task.send(claim)?;
-    //         Ok(())
-    //     };
-    //     loop {
-    //         match event_listener_fn(
-    //             Arc::clone(&client_clone),
-    //             &tx_claimer_for_listener_task,
-    //             from_block_fund,
-    //             fund_f,
-    //             from_block_state,
-    //             state_f,
-    //         )
-    //         .await
-    //         {
-    //             Ok((last_block_f, last_block_s)) => {
-    //                 from_block_fund = last_block_f;
-    //                 from_block_state = last_block_s;
-    //             }
-    //             Err(e) => {
-    //                 error!(LOG, "Error at event_listener: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //     anyhow::Ok(())
-    // });
-    //
-    // let tx_claimer_for_catcher_task = tx_claimer.clone();
-    // let tx_sender_for_catcher_task = tx_sender.clone();
-    // let db_clone = Arc::clone(&db);
-    // let client_clone = Arc::clone(&client);
-    // let voider_task = tokio::task::spawn(async move {
-    //     loop {
-    //         // let now = now();
-    //         // let claims = db_clone.get_claims_expired(now).await?;
-    //         // for claim in claims {
-    //         //     info!(LOG, "Voiding claim for : {}", claim.email_address);
-    //         //     tokio::task::spawn(
-    //         //         void_unclaims(
-    //         //             claim,
-    //         //             Arc::clone(&db_clone),
-    //         //             Arc::clone(&client_clone),
-    //         //             tx_sender_for_voider_task.clone(),
-    //         //         )
-    //         //         .map_err(|err| error!(LOG, "Error voider task: {}", err)),
-    //         //     );
-    //         // }
-    //         // sleep(Duration::from_secs(120)).await;
-    //         match catch_claims_in_db_fn(
-    //             Arc::clone(&db_clone),
-    //             Arc::clone(&client_clone),
-    //             &tx_claimer_for_catcher_task,
-    //             &tx_sender_for_catcher_task,
-    //         )
-    //         .await
-    //         {
-    //             Ok(()) => {}
-    //             Err(e) => {
-    //                 error!(LOG, "Error at voider: {}", e; "func" => function_name!())
-    //             }
-    //         }
-    //     }
-    //     anyhow::Ok(())
-    // });
-    //
-    // let _ = tokio::join!(
-    //     email_receiver_task,
-    //     email_handler_task,
-    //     account_creation_task,
-    //     claimer_task,
-    //     api_server_task,
-    //     email_sender_task,
-    //     event_listener_task,
-    //     voider_task
-    // );
+    let tx_handler_for_fetcher_task = tx_handler.clone();
+    let emails_pool_fetcher_task = tokio::task::spawn(async move {
+        loop {
+            match emails_pool_fetcher_fn(&tx_handler_for_fetcher_task).await {
+                Ok(()) => {}
+                Err(e) => {
+                    error!(LOG, "Error at emails_pool_fetcher: {}", e; "func" => function_name!())
+                }
+            }
+        }
+        anyhow::Ok(())
+    });
+    let db_clone_receiver = Arc::clone(&db);
+    let mut email_receiver = ImapClient::new(config.imap_config).await?;
+    let tx_handler_for_receiver_task = tx_handler.clone();
+    let email_receiver_task = tokio::task::spawn(async move {
+        loop {
+            match email_receiver_fn(&mut email_receiver, &tx_handler_for_receiver_task).await {
+                Ok(new_email_receiver) => {}
+                Err(e) => {
+                    error!(LOG, "Error at email_receiver: {}", e; "func" => function_name!())
+                }
+            }
+        }
+        anyhow::Ok(())
+    });
 
+    let tx_sender_for_email_task = tx_sender.clone();
+    let tx_claimer_for_email_task = tx_claimer.clone();
+    let tx_creator_for_email_task = tx_creator.clone();
+    let db_clone = Arc::clone(&db);
+    let client_clone = Arc::clone(&client);
+    let email_handler_task = tokio::task::spawn(async move {
+        loop {
+            match email_handler_fn(
+                &mut rx_handler,
+                Arc::clone(&db_clone),
+                Arc::clone(&client_clone),
+                tx_sender_for_email_task.clone().into(),
+                &tx_claimer_for_email_task,
+                &tx_creator_for_email_task,
+            )
+            .await
+            {
+                Ok(()) => {}
+                Err(e) => {
+                    error!(LOG, "Error at email_handler: {}", e; "func" => function_name!())
+                }
+            }
+        }
+
+        anyhow::Ok(())
+    });
+
+    let tx_sender_for_creator_task = tx_sender.clone();
+    let db_clone = Arc::clone(&db);
+    let client_clone = Arc::clone(&client);
+    let account_creation_task = tokio::task::spawn(async move {
+        loop {
+            match account_creation_fn(
+                &mut rx_creator,
+                Arc::clone(&db_clone),
+                Arc::clone(&client_clone),
+                &tx_sender_for_creator_task,
+            )
+            .await
+            {
+                Ok(()) => {}
+                Err(e) => {
+                    error!(LOG, "Error at account_creation: {}", e; "func" => function_name!())
+                }
+            }
+        }
+
+        anyhow::Ok(())
+    });
+
+    let tx_sender_for_claimer_task = tx_sender.clone();
+    let tx_creator_for_claimer_task = tx_creator.clone();
+    let db_clone = Arc::clone(&db);
+    let client_clone = Arc::clone(&client);
+
+    let tx_claimer_for_server_task = tx_claimer.clone();
+    let api_server_task = tokio::task::spawn(
+        run_server(
+            WEB_SERVER_ADDRESS.get().unwrap(),
+            Arc::clone(&db),
+            Arc::clone(&client),
+            tx_claimer_for_server_task,
+        )
+        .map_err(|err| error!(LOG, "Error api server: {}", err; "func" => function_name!())),
+    );
+
+    let email_sender = SmtpClient::new(config.smtp_config)?;
+    let email_sender_task = tokio::task::spawn(async move {
+        loop {
+            match email_sender_fn(&mut rx_sender, &email_sender).await {
+                Ok(()) => {}
+                Err(e) => {
+                    error!(LOG, "Error at email_sender: {}", e; "func" => function_name!())
+                }
+            }
+        }
+
+        anyhow::Ok(())
+    });
+
+    let tx_claimer_for_listener_task = tx_claimer.clone();
+    let client_clone = Arc::clone(&client);
+
+    let tx_claimer_for_catcher_task = tx_claimer.clone();
+    let tx_sender_for_catcher_task = tx_sender.clone();
+    let db_clone = Arc::clone(&db);
+    let client_clone = Arc::clone(&client);
+
+    let _ = tokio::join!(
+        email_receiver_task,
+        email_handler_task,
+        account_creation_task,
+        api_server_task,
+        email_sender_task,
+    );
     Ok(())
 }
 

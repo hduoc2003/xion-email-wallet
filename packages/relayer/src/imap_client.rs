@@ -158,7 +158,7 @@ impl ImapClient {
         loop {
             match self.session.uid_search("UNSEEN").await {
                 Ok(uids) => {
-                    trace!(LOG, "Got unseen emails: {:?}!", uids; "func" => function_name!());
+                    trace!(LOG, "Got unseen emails uids: {:?}!", uids; "func" => function_name!());
                     let mut results = vec![];
                     for uid in uids {
                         let res = self
