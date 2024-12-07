@@ -450,7 +450,7 @@ pub(crate) async fn error_email_if_needed(
 
     let error_email = match error.as_str() {
         "Account is already created" => {
-            todo!()
+            unimplemented!()
             // let email = EmailMessage {
             //     to: from_address.clone(),
             //     email_args: EmailArgs::Error {
@@ -477,7 +477,7 @@ pub(crate) async fn error_email_if_needed(
             //     tx_hash: None,
             // };
             // Ok(email)
-            todo!()
+            unimplemented!()
         }
         _ => Err(()),
     };

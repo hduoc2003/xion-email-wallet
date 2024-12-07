@@ -131,7 +131,7 @@ impl ChainClient {
     }
 
     pub fn self_eth_addr(&self) -> Address {
-        todo!()
+        unimplemented!()
         // self.client.address()
     }
 
@@ -141,7 +141,7 @@ impl ChainClient {
         email_addr: String,
         hostname: String,
     ) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -182,31 +182,33 @@ impl ChainClient {
         // let tx_hash = format!("0x{}", hex::encode(tx_hash.as_bytes()));
         let client = reqwest::Client::new();
         let psi_point: Vec<String> = data.psi_point.iter().map(|x| x.to_string()).collect();
-        let res = client
-            .post(format!("{}/create-account", NIBIRU_SDK_PROXY_ADDR))
-            .json(&json!({
-                "wallet_salt_byte32": u256_to_bytes32(&data.wallet_salt),
-                "proof": {
-                    "relayer_hash": "2657775570588162468106059892364959818794579555689188187841520494766536623870",
-                    "email_addr_pointer": data.email_addr_pointer.to_string(),
-                    "account_key_commit": data.account_key_commit.to_string(),
-                    "wallet_salt": data.wallet_salt.to_string(),
-                    "psi_point": psi_point,
-                    "proof": data.proof
-                }
-            }))
-            .send()
-            .await
-            .unwrap()
-            .error_for_status()
-            .unwrap();
-        let res_json = res.json::<AccountCreationResponse>().await?;
-        info!(LOG, "account creation response {:?}", {&res_json});
-        Ok(res_json.account_verify_tx_hash)
+        // Todo
+        // let res = client
+        //     .post(format!("{}/create-account", NIBIRU_SDK_PROXY_ADDR))
+        //     .json(&json!({
+        //         "wallet_salt_byte32": u256_to_bytes32(&data.wallet_salt),
+        //         "proof": {
+        //             "relayer_hash": "2657775570588162468106059892364959818794579555689188187841520494766536623870",
+        //             "email_addr_pointer": data.email_addr_pointer.to_string(),
+        //             "account_key_commit": data.account_key_commit.to_string(),
+        //             "wallet_salt": data.wallet_salt.to_string(),
+        //             "psi_point": psi_point,
+        //             "proof": data.proof
+        //         }
+        //     }))
+        //     .send()
+        //     .await
+        //     .unwrap()
+        //     .error_for_status()
+        //     .unwrap();
+        // let res_json = res.json::<AccountCreationResponse>().await?;
+        // info!(LOG, "account creation response {:?}", {&res_json});
+        // Ok(res_json.account_verify_tx_hash)
+        Ok("0x".to_string())
     }
 
     pub async fn init_account(&self, data: AccountInitInput) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -231,7 +233,7 @@ impl ChainClient {
     }
 
     pub async fn transport_account(&self, data: AccountTransportInput) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -256,7 +258,7 @@ impl ChainClient {
     }
 
     pub async fn claim(&self, data: ClaimInput) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -295,7 +297,7 @@ impl ChainClient {
     }
 
     pub async fn void(&self, id: U256, is_fund: bool) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -327,7 +329,7 @@ impl ChainClient {
 
     #[named]
     pub async fn handle_email_op(&self, email_op: EmailOp) -> Result<(String, U256)> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -376,7 +378,7 @@ impl ChainClient {
         public_key_hash: [u8; 32],
         signature: Bytes,
     ) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -391,7 +393,7 @@ impl ChainClient {
         //     Ok(tx) => tx,
         //     Err(err) => {
         //         error!(LOG, "set_dkim_public_key_hash error {}", err);
-        //         todo!()
+        //         unimplemented!()
         //     }
         // };
         // let receipt = tx
@@ -405,7 +407,7 @@ impl ChainClient {
     }
 
     pub async fn free_mint_test_erc20(&self, wallet_addr: Address, amount: U256) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -423,7 +425,7 @@ impl ChainClient {
     }
 
     pub(crate) async fn transfer_onboarding_tokens(&self, wallet_addr: H160) -> Result<String> {
-        todo!()
+        unimplemented!()
         // Mutex is used to prevent nonce conflicts.
         // let mut mutex = SHARED_MUTEX.lock().await;
         // *mutex += 1;
@@ -450,7 +452,7 @@ impl ChainClient {
     }
 
     pub async fn query_account_key_commit(&self, pointer: &Fr) -> Result<Fr> {
-        todo!()
+        unimplemented!()
         // let account_key_commit = self
         //     .account_handler
         //     .account_key_commit_of_pointer(fr_to_bytes32(pointer)?)
@@ -459,7 +461,7 @@ impl ChainClient {
     }
 
     pub async fn query_account_info(&self, account_key_commit: &Fr) -> Result<AccountKeyInfo> {
-        todo!()
+        unimplemented!()
         // let info = self
         //     .account_handler
         //     .get_info_of_account_key_commit(fr_to_bytes32(account_key_commit)?)
@@ -472,7 +474,7 @@ impl ChainClient {
         wallet_salt: &WalletSalt,
         token_name: &str,
     ) -> Result<U256> {
-        todo!()
+        unimplemented!()
         // let token_addr = self
         //     .token_registry
         //     .get_token_address(token_name.to_string())
@@ -485,7 +487,7 @@ impl ChainClient {
     }
 
     pub async fn query_erc20_address(&self, token_name: &str) -> Result<Address> {
-        todo!()
+        unimplemented!()
         // let token_addr = self
         //     .token_registry
         //     .get_token_address(token_name.to_string())
@@ -495,7 +497,7 @@ impl ChainClient {
     }
 
     pub async fn query_decimals_of_erc20(&self, token_name: &str) -> Result<u8> {
-        todo!()
+        unimplemented!()
         // let token_addr = self
         //     .token_registry
         //     .get_token_address(token_name.to_string())
@@ -505,14 +507,14 @@ impl ChainClient {
     }
 
     pub async fn query_decimals_of_erc20_address(&self, token_addr: Address) -> Result<u8> {
-        todo!()
+        unimplemented!()
         // let erc20 = ERC20::new(token_addr, self.client.clone());
         // let decimals = erc20.decimals().call().await?;
         // Ok(decimals)
     }
 
     pub async fn query_token_name(&self, token_addr: Address) -> Result<String> {
-        todo!()
+        unimplemented!()
         // let name = self
         //     .token_registry
         //     .get_token_name_of_address(token_addr)
@@ -522,7 +524,7 @@ impl ChainClient {
     }
 
     pub async fn query_relayer_rand_hash(&self, relayer: Address) -> Result<Fr> {
-        todo!()
+        unimplemented!()
         // let rand_hash = self.relayer_handler.get_rand_hash(relayer).call().await?;
         // bytes32_to_fr(&rand_hash)
     }
@@ -533,7 +535,7 @@ impl ChainClient {
         command: &str,
     ) -> Result<Address> {
 
-        todo!()
+        unimplemented!()
         // let wallet_addr = self.get_wallet_addr_from_salt(&wallet_salt.0).await?;
         // let extension_addr = self
         //     .extension_handler
@@ -547,7 +549,7 @@ impl ChainClient {
         &self,
         extension_addr: Address,
     ) -> Result<Vec<Vec<String>>> {
-        todo!()
+        unimplemented!()
         // let templates = self
         //     .extension_handler
         //     .get_subject_templates_of_extension(extension_addr)
@@ -566,23 +568,25 @@ impl ChainClient {
         let client = reqwest::Client::new();
         let salt_32 = fr_to_bytes32(wallet_salt).unwrap();
         info!(LOG, "salt_32 ");
-        let res = client
-            .post(format!("{}/get-wallet-address", NIBIRU_SDK_PROXY_ADDR))
-            .json(&json!({
-                "wallet_salt": salt_32
-            }))
-            .send()
-            .await
-            .unwrap()
-            .error_for_status()
-            .unwrap();
-        let addr = res.json::<GetWalletRes>().await;
-        println!("get wallet address response raw {:?}", addr);
-        Ok(addr.unwrap().address)
+        // Todo
+        // let res = client
+        //     .post(format!("{}/get-wallet-address", NIBIRU_SDK_PROXY_ADDR))
+        //     .json(&json!({
+        //         "wallet_salt": salt_32
+        //     }))
+        //     .send()
+        //     .await
+        //     .unwrap()
+        //     .error_for_status()
+        //     .unwrap();
+        // let addr = res.json::<GetWalletRes>().await;
+        // println!("get wallet address response raw {:?}", addr);
+        // Ok(addr.unwrap().address)
+        Ok("0x".to_string())
     }
 
     pub async fn query_rand_hash_of_relayer(&self, relayer: Address) -> Result<Fr> {
-        todo!()
+        unimplemented!()
         // let rand_hash = self.relayer_handler.get_rand_hash(relayer).call().await?;
         // bytes32_to_fr(&rand_hash)
     }
@@ -614,20 +618,20 @@ impl ChainClient {
     // }
 
     pub async fn query_unclaimed_fund(&self, id: U256) -> Result<UnclaimedFund> {
-        todo!()
+        unimplemented!()
         // let unclaimed_fund = self.unclaims_handler.get_unclaimed_fund(id).await?;
         // Ok(unclaimed_fund)
     }
 
     pub async fn query_unclaimed_state(&self, id: U256) -> Result<UnclaimedState> {
-        todo!()
+        unimplemented!()
         // let unclaimed_state = self.unclaims_handler.get_unclaimed_state(id).await?;
         // Ok(unclaimed_state)
     }
 
     #[named]
     pub async fn get_unclaim_id_from_tx_hash(&self, tx_hash: &str, is_fund: bool) -> Result<U256> {
-        todo!()
+        unimplemented!()
         // let receipt: TransactionReceipt = self
         //     .client
         //     .get_transaction_receipt(H256::from_str(tx_hash)?)
@@ -668,7 +672,7 @@ impl ChainClient {
     }
 
     pub async fn validate_email_op(&self, email_op: EmailOp) -> Result<()> {
-        todo!()
+        unimplemented!()
         // let call = self.core.validate_email_op(email_op);
         // call.call().await?;
         // Ok(())
@@ -681,7 +685,7 @@ impl ChainClient {
         from_block: U64,
         mut f: F,
     ) -> Result<U64> {
-        todo!()
+        unimplemented!()
         // let ev = self
         //     .unclaims_handler
         //     .event_for_name::<email_wallet_events::UnclaimedFundRegisteredFilter>(
@@ -704,7 +708,7 @@ impl ChainClient {
         from_block: U64,
         mut f: F,
     ) -> Result<U64> {
-        todo!()
+        unimplemented!()
         // let ev = self
         //     .unclaims_handler
         //     .event_for_name::<email_wallet_events::UnclaimedStateRegisteredFilter>(
@@ -721,7 +725,7 @@ impl ChainClient {
     }
 
     pub(crate) async fn check_if_point_registered(&self, point: Point) -> Result<bool> {
-        todo!()
+        unimplemented!()
         // let Point { x, y } = point;
         // let x = hex2field(&x)?;
         // let y = hex2field(&y)?;
@@ -741,7 +745,7 @@ impl ChainClient {
         email_addr: &str,
         account_key: &str,
     ) -> Result<bool> {
-        todo!()
+        unimplemented!()
         // let account_key = AccountKey(hex2field(account_key)?);
         // let padded_email_addr = PaddedEmailAddr::from_email_addr(email_addr);
         // let relayer_rand = RelayerRand(hex2field(RELAYER_RAND.get().unwrap())?);
@@ -758,7 +762,7 @@ impl ChainClient {
     }
 
     pub(crate) async fn check_if_account_initialized_by_point(&self, point: Point) -> Result<bool> {
-        todo!()
+        unimplemented!()
         // let Point { x, y } = point;
         // let x = hex2field(&x)?;
         // let y = hex2field(&y)?;
@@ -789,7 +793,7 @@ impl ChainClient {
         domain_name: ::std::string::String,
         public_key_hash: [u8; 32],
     ) -> Result<bool> {
-        todo!()
+        unimplemented!()
         // let is_valid = self
         //     .ecdsa_owned_dkim_registry
         //     .is_dkim_public_key_hash_valid(domain_name.clone(), public_key_hash)

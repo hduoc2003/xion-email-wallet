@@ -287,7 +287,7 @@ pub(crate) async fn handle_account_init(
     tx_sender: UnboundedSender<EmailMessage>,
     is_faucet: bool,
 ) -> Result<()> {
-    todo!();
+    unimplemented!();
     // let from_address = parsed_email.get_from_addr()?;
     // if field2hex(&account_key.0) != db.get_account_key(&from_address).await?.unwrap() {
     //     return Err(anyhow!(
@@ -358,7 +358,7 @@ pub(crate) async fn handle_account_transport(
     chain_client: Arc<ChainClient>,
     tx_sender: UnboundedSender<EmailMessage>,
 ) -> Result<()> {
-    todo!();
+    unimplemented!();
     // let from_address = parsed_email.get_from_addr()?;
     // let padded_from_address = PaddedEmailAddr::from_email_addr(&from_address);
     // let relayer_rand = RelayerRand(hex2field(RELAYER_RAND.get().unwrap())?);
@@ -466,7 +466,7 @@ pub(crate) fn get_masked_subject(subject: &str) -> Result<(String, usize)> {
     //     }
     //     Err(_) => Ok((subject.to_string(), 0)),
     // }
-    todo!()
+    unimplemented!()
 }
 
 pub(crate) async fn generate_email_sender_input(
@@ -526,17 +526,18 @@ pub(crate) async fn generate_account_creation_input(
         circuits_dir_path.to_str().unwrap(), email_address, relayer_rand, account_key, input_file_name.to_str().unwrap()
     );
 
-    println!("before proc");
     let mut proc = tokio::process::Command::new("yarn")
         .args(command_str.split_whitespace())
         .spawn()?;
 
-    println!("after proc");
     let status = proc.wait().await?;
+    println!("Finished generating account creation");
     assert!(status.success());
 
     let result = read_to_string(&input_file_name).await?;
+    println!("Removing file");
     remove_file(input_file_name).await?;
+    println!("Removed file");
 
     Ok(result)
 }
